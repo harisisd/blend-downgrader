@@ -1,0 +1,63 @@
+{
+  "name": "blend-downgrader",
+  "productName": "Blend Downgrader",
+  "version": "1.0.0",
+  "description": "Buka file Blender 4.1–5.x di Blender versi lama (3.x–4.x)",
+  "main": "src/main.js",
+  "author": "Blend Downgrader",
+  "license": "MIT",
+  "scripts": {
+    "sync-engine": "node -e \"for (const f of ['legacy_export.py','legacy_import.py']) require('fs').copyFileSync('../'+f,'engine/'+f)\"",
+    "start": "npm run sync-engine && electron .",
+    "dist:mac": "npm run sync-engine && electron-builder --mac dmg --arm64 --x64",
+    "dist:win": "npm run sync-engine && electron-builder --win nsis portable --x64",
+    "dist": "npm run sync-engine && electron-builder --mac dmg --arm64 --x64 --win nsis portable --x64"
+  },
+  "build": {
+    "appId": "app.blenddowngrader",
+    "productName": "Blend Downgrader",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "engine",
+        "to": "engine",
+        "filter": [
+          "*.py"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.graphics-design",
+      "target": "dmg",
+      "identity": "-", "hardenedRuntime": false,
+      "icon": "build/icon.png"
+    },
+    "dmg": {
+      "title": "Blend Downgrader ${version}",
+      "artifactName": "Blend-Downgrader-${version}-mac-${arch}.dmg"
+    },
+    "win": {
+      "icon": "build/icon.png",
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "artifactName": "Blend-Downgrader-${version}-Setup.exe"
+    },
+    "portable": {
+      "artifactName": "Blend-Downgrader-${version}-portable.exe"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.4.1",
+    "electron-builder": "^26.18.0"
+  }
+}
