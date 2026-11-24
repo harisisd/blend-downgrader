@@ -10,10 +10,10 @@ paket          ──[Blender 3.x + legacy_import.py]──► file_lama.blend  
 ## App Blend Downgrader (macOS .dmg / Windows .exe)
 
 Unduh installer-nya dari halaman **Releases** repo ini (atau build sendiri, hasilnya di `app/dist/`):
-- `Blend-Downgrader-1.0.0-mac-arm64.dmg` untuk Mac M1/M2/M3/M4
-- `Blend-Downgrader-1.0.0-mac-x64.dmg` untuk Mac Intel
-- `Blend-Downgrader-1.0.0-Setup.exe` untuk Windows (installer)
-- `Blend-Downgrader-1.0.0-portable.exe` untuk Windows (tanpa install)
+- `Blend-Downgrader-1.0.1-mac-arm64.dmg` untuk Mac M1/M2/M3/M4
+- `Blend-Downgrader-1.0.1-mac-x64.dmg` untuk Mac Intel
+- `Blend-Downgrader-1.0.1-Setup.exe` untuk Windows (installer)
+- `Blend-Downgrader-1.0.1-portable.exe` untuk Windows (tanpa install)
 
 Fitur:
 - Seret satu atau beberapa file `.blend` ke jendela app. Versi tiap file langsung terbaca, termasuk file terkompresi.
