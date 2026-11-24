@@ -321,8 +321,9 @@ def load_images(pkg, images):
     for d in images:
         if not d.get("file"):
             continue
-        path = os.path.join(pkg, d["file"])
+        path = d["file"]
         try:
+            path = pkg_path(pkg, d["file"])
             img = bpy.data.images.load(path, check_existing=False)
         except Exception as e:
             warn(f"Gagal memuat tekstur {path}: {e}")
@@ -355,7 +356,7 @@ def _set_edge_attr(me, prop, attr_name, dtype_name, values):
 
 
 def build_mesh(pkg, meta):
-    A = np.load(os.path.join(pkg, meta["file"]))
+    A = np.load(pkg_path(pkg, meta["file"]), allow_pickle=False)
     me = bpy.data.meshes.new(meta["name"])
     co = A["co"]
     ev = A["edges"]
@@ -658,6 +659,18 @@ def build_armature(ad, scene):
         warn(f"Bone collections di '{ad['name']}' tidak ada di Blender "
              f"{bpy.app.version_string}; semua bone ditaruh di layer 1")
     return arm
+
+
+def pkg_path(pkg, rel):
+    """Path file di dalam paket. Tolak path absolut / '..' yang keluar dari paket,
+    supaya paket dari orang lain tidak bisa menarik file lain di komputer ini."""
+    if not isinstance(rel, str) or os.path.isabs(rel):
+        raise ValueError(f"Path tidak valid di paket: {rel!r}")
+    root = os.path.realpath(pkg)
+    full = os.path.realpath(os.path.join(root, rel))
+    if not full.startswith(root + os.sep):
+        raise ValueError(f"Path keluar dari folder paket: {rel!r}")
+    return full
 
 
 def import_package(pkg, out_path=None, pack=True, clear_scene=True):
